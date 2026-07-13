@@ -1,0 +1,22 @@
+.health-overview-card {
+    background: #18253d;
+    border-radius: 18px;
+    padding: 25px;
+    border: 1px solid #233657;
+    min-height: 230px;
+}
+
+.health-overview-title {
+    font-size: 18px;
+    color: #9fb3d1;
+    margin-bottom: 20px;
+}
+
+.chart-placeholder {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-size: 18px;
+}

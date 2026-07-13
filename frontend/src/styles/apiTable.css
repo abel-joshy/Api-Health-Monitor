@@ -1,0 +1,190 @@
+.api-table-card {
+    background: #18253d;
+    border-radius: 18px;
+    padding: 25px;
+    border: 1px solid #233657;
+}
+
+.table-title {
+    margin-bottom: 20px;
+    color: white;
+}
+
+.api-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.api-table th {
+    color: #8fa4c7;
+    text-align: left;
+    padding: 15px 10px;
+    border-bottom: 1px solid #233657;
+}
+
+.api-table td {
+    padding: 18px 10px;
+    border-bottom: 1px solid #233657;
+}
+
+.api-table tr:hover {
+    background: rgba(255,255,255,0.03);
+}
+
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.status-up {
+    background: rgba(34,197,94,0.2);
+    color: #22c55e;
+}
+
+.status-warning {
+    background: rgba(245,158,11,0.2);
+    color: #f59e0b;
+}
+
+.status-down {
+    background: rgba(239,68,68,0.2);
+    color: #ef4444;
+}
+.status-badge {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.status-up {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+}
+
+.status-warning {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.status-down {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.no-data {
+  text-align: center;
+  padding: 20px;
+  color: #94a3b8;
+}
+/* ===========================
+   Emergency Overlay
+=========================== */
+
+.emergency-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: rgba(255, 0, 0, 0.4);
+
+  z-index: 9999;
+
+  animation: alertBlink 1s infinite;
+}
+
+.emergency-popup {
+  background: #b00000;
+
+  color: white;
+
+  padding: 50px;
+
+  border-radius: 20px;
+
+  min-width: 600px;
+
+  text-align: center;
+
+  box-shadow:
+    0 0 30px red,
+    0 0 60px red;
+
+  animation:
+    popupShake 0.4s infinite;
+}
+
+.emergency-popup h1 {
+  font-size: 42px;
+  margin-bottom: 20px;
+}
+
+.emergency-popup p {
+  font-size: 22px;
+}
+
+.emergency-popup ul {
+  list-style: none;
+  padding: 0;
+}
+
+.emergency-popup li {
+  font-size: 28px;
+  margin: 12px 0;
+  font-weight: bold;
+}
+
+.dismiss-text {
+  margin-top: 30px;
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+/* ===========================
+   Animations
+=========================== */
+
+@keyframes alertBlink {
+  0% {
+    background: rgba(255,0,0,0.2);
+  }
+
+  50% {
+    background: rgba(255,0,0,0.75);
+  }
+
+  100% {
+    background: rgba(255,0,0,0.2);
+  }
+}
+
+@keyframes popupShake {
+  0% {
+    transform: translateX(0px);
+  }
+
+  25% {
+    transform: translateX(-6px);
+  }
+
+  50% {
+    transform: translateX(6px);
+  }
+
+  75% {
+    transform: translateX(-6px);
+  }
+
+  100% {
+    transform: translateX(0px);
+  }
+}

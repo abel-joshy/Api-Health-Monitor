@@ -1,0 +1,19 @@
+.category-chart-card {
+    background: #18253d;
+    border-radius: 18px;
+    padding: 25px;
+    border: 1px solid #233657;
+}
+
+.category-title {
+    color: #9fb3d1;
+    margin-bottom: 20px;
+}
+
+.pie-placeholder {
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #64748b;
+}

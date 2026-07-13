@@ -1,0 +1,87 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #101b2d;
+    border-radius: 18px;
+    border: 1px solid #1f2d42;
+}
+
+.header-left h1 {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.header-left p {
+    color: #8fa4c7;
+    font-size: 14px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.time-filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #18253d;
+    padding: 12px 18px;
+    border-radius: 12px;
+    color: #9fb3d1;
+}
+
+.refresh-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.refresh-btn:hover {
+    background: #1d4ed8;
+}
+
+.notification-icon {
+    position: relative;
+    background: #18253d;
+    padding: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ef4444;
+    color: white;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 11px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #22c55e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}

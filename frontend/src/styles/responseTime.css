@@ -1,0 +1,25 @@
+.response-time-card {
+    background: #18253d;
+    border-radius: 18px;
+    padding: 25px;
+    border: 1px solid #233657;
+    min-height: 230px;
+}
+
+.response-title {
+    color: #9fb3d1;
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+.response-value {
+    font-size: 56px;
+    font-weight: bold;
+    color: white;
+}
+
+.response-change {
+    color: #22c55e;
+    margin-top: 20px;
+    font-size: 15px;
+}

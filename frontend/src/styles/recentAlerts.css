@@ -1,0 +1,52 @@
+.recent-alerts-card {
+    background: #18253d;
+    border-radius: 18px;
+    padding: 25px;
+    border: 1px solid #233657;
+}
+
+.alert-title {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.alert-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #233657;
+}
+
+.alert-item:last-child {
+    border-bottom: none;
+}
+
+.alert-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.alert-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.alert-dot.down {
+    background: #ef4444;
+}
+
+.alert-dot.warning {
+    background: #f59e0b;
+}
+
+.alert-dot.success {
+    background: #22c55e;
+}
+
+.alert-time {
+    color: #8fa4c7;
+    font-size: 13px;
+}

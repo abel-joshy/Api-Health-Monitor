@@ -1,0 +1,40 @@
+.health-score-card {
+    background: #18253d;
+    border-radius: 18px;
+    padding: 25px;
+    border: 1px solid #233657;
+    min-height: 230px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.health-score-title {
+    font-size: 18px;
+    color: #9fb3d1;
+    margin-bottom: 20px;
+}
+
+.health-score-value {
+    font-size: 60px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.health-score-label {
+    font-size: 22px;
+    margin-top: 10px;
+    color: #ffffff;
+}
+
+.health-score-change {
+    margin-top: 15px;
+    color: #22c55e;
+    font-size: 14px;
+}
+.gauge-container {
+    width: 180px;
+    height: 180px;
+    margin: 20px auto;
+}
