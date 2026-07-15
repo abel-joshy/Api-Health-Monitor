@@ -13,13 +13,17 @@ import RecentAlerts from "../components/RecentAlerts";
 
 import "../styles/dashboard.css";
 
+// Read backend URL from frontend/.env
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 function Dashboard() {
   const [apis, setApis] = useState([]);
 
   const fetchApis = async () => {
     try {
       const res = await axios.get(
-        "http://127.0.0.1:8000/api/monitor/all"
+        `${API_BASE_URL}/api/monitor/all`
       );
 
       setApis(res.data);
