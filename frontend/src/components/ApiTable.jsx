@@ -2,6 +2,9 @@ import "../styles/apiTable.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 function ApiTable() {
   const [apis, setApis] = useState([]);
   const [previousApis, setPreviousApis] = useState([]);
@@ -12,12 +15,12 @@ function ApiTable() {
   const fetchApis = async () => {
     try {
       const res = await axios.get(
-    "http://127.0.0.1:8000/api/monitor/all"
-);
+        `${API_BASE_URL}/api/monitor/all`
+      );
 
       setApis(res.data);
     } catch (err) {
-      console.error(err);
+      console.error("Failed to fetch APIs:", err);
       setApis([]);
     }
   };
@@ -56,7 +59,6 @@ function ApiTable() {
     }
 
     setPreviousApis(apis);
-
   }, [apis]);
 
   return (
