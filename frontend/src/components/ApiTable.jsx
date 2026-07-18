@@ -8,29 +8,28 @@ const API_BASE_URL =
 function ApiTable() {
   const [apis, setApis] = useState([]);
   const [previousApis, setPreviousApis] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const [showAlert, setShowAlert] = useState(false);
   const [downApis, setDownApis] = useState([]);
 
   const fetchApis = async () => {
     try {
-      const res = await axios.get(
-        `${API_BASE_URL}/api/monitor/all`
-      );
+      const res = await axios.get(`${API_BASE_URL}/api/monitor/all`);
 
       setApis(res.data);
+      setLoading(false);
     } catch (err) {
       console.error("Failed to fetch APIs:", err);
       setApis([]);
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchApis();
 
-    const interval = setInterval(() => {
-      fetchApis();
-    }, 3000);
+    const interval = setInterval(fetchApis, 3000);
 
     return () => clearInterval(interval);
   }, []);
@@ -75,9 +74,7 @@ function ApiTable() {
 
             <ul>
               {downApis.map((api) => (
-                <li key={api.name}>
-                  {api.name}
-                </li>
+                <li key={api.name}>{api.name}</li>
               ))}
             </ul>
 
@@ -89,9 +86,7 @@ function ApiTable() {
       )}
 
       <div className="api-table-card">
-        <h2 className="table-title">
-          API Status
-        </h2>
+        <h2 className="table-title">API Status</h2>
 
         <table className="api-table">
           <thead>
@@ -104,9 +99,15 @@ function ApiTable() {
           </thead>
 
           <tbody>
-            {apis.length > 0 ? (
-              apis.map((api, index) => (
-                <tr key={index}>
+            {loading ? (
+              <tr>
+                <td colSpan="4" className="no-data">
+                  Loading APIs...
+                </td>
+              </tr>
+            ) : apis.length > 0 ? (
+              apis.map((api) => (
+                <tr key={api.name}>
                   <td>{api.name}</td>
 
                   <td>
@@ -129,17 +130,12 @@ function ApiTable() {
                       : "Timeout"}
                   </td>
 
-                  <td>
-                    {api.status_code ?? "-"}
-                  </td>
+                  <td>{api.status_code ?? "-"}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td
-                  colSpan="4"
-                  className="no-data"
-                >
+                <td colSpan="4" className="no-data">
                   No APIs found
                 </td>
               </tr>
