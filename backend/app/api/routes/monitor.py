@@ -6,9 +6,24 @@ from app.core.database import services_collection
 router = APIRouter()
 
 
+# --------------------------------------------------
+# Health Endpoint
+# --------------------------------------------------
+@router.get("/health")
+def health():
+    return {
+        "status": "UP",
+        "service": "API Health Monitor",
+        "message": "Server is running"
+    }
+
+
+# --------------------------------------------------
 # Add a new API to monitor
+# --------------------------------------------------
 @router.post("/add")
 def add_service(service: ServiceCreate):
+
     services_collection.insert_one(service.dict())
 
     return {
@@ -17,7 +32,9 @@ def add_service(service: ServiceCreate):
     }
 
 
+# --------------------------------------------------
 # Get all monitored APIs with health status
+# --------------------------------------------------
 @router.get("/all")
 def get_all_services():
 
@@ -28,6 +45,7 @@ def get_all_services():
     results = []
 
     for service in services:
+
         health = check_api(service["url"])
 
         results.append({
@@ -41,9 +59,12 @@ def get_all_services():
     return results
 
 
-# Check a single API without saving it
+# --------------------------------------------------
+# Check a single API without saving
+# --------------------------------------------------
 @router.post("/check")
 def check_service(service: ServiceCreate):
+
     result = check_api(service.url)
 
     return {
@@ -53,15 +74,30 @@ def check_service(service: ServiceCreate):
     }
 
 
-# Dashboard statistics
+# --------------------------------------------------
+# Dashboard Statistics
+# --------------------------------------------------
 @router.get("/stats")
 def get_stats():
+
     results = get_all_services()
 
     total = len(results)
-    healthy = len([x for x in results if x["status"] == "UP"])
-    warning = len([x for x in results if x["status"] == "WARNING"])
-    down = len([x for x in results if x["status"] == "DOWN"])
+
+    healthy = len([
+        x for x in results
+        if x["status"] == "UP"
+    ])
+
+    warning = len([
+        x for x in results
+        if x["status"] == "WARNING"
+    ])
+
+    down = len([
+        x for x in results
+        if x["status"] == "DOWN"
+    ])
 
     response_times = [
         x["response_time"]
@@ -83,7 +119,9 @@ def get_stats():
     }
 
 
-# Delete API from MongoDB
+# --------------------------------------------------
+# Delete API
+# --------------------------------------------------
 @router.delete("/delete/{service_name}")
 def delete_service(service_name: str):
 
