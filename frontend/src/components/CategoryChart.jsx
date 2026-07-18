@@ -1,15 +1,39 @@
 import "../styles/categoryChart.css";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
+  Legend,
+} from "recharts";
 
-const data = [
-  { name: "Healthy", value: 4 },
-  { name: "Warning", value: 1 },
-  { name: "Down", value: 1 },
-];
+const COLORS = {
+  Healthy: "#22c55e",
+  Warning: "#f59e0b",
+  Down: "#ef4444",
+};
 
-const COLORS = ["#22c55e", "#f59e0b", "#ef4444"];
+function CategoryChart({ apis = [] }) {
+  const healthy = apis.filter(api => api.status === "UP").length;
+  const warning = apis.filter(api => api.status === "WARNING").length;
+  const down = apis.filter(api => api.status === "DOWN").length;
 
-function CategoryChart({ apis }) {
+  const data = [
+    { name: "Healthy", value: healthy },
+    { name: "Warning", value: warning },
+    { name: "Down", value: down },
+  ].filter(item => item.value > 0);
+
+  if (apis.length === 0) {
+    return (
+      <div className="category-chart-card">
+        <h2>Health by Category</h2>
+        <p>No API data available</p>
+      </div>
+    );
+  }
+
   return (
     <div className="category-chart-card">
       <h2>Health by Category</h2>
@@ -20,14 +44,18 @@ function CategoryChart({ apis }) {
             data={data}
             dataKey="value"
             outerRadius={80}
+            label
           >
-            {data.map((entry, index) => (
+            {data.map((entry) => (
               <Cell
-                key={index}
-                fill={COLORS[index]}
+                key={entry.name}
+                fill={COLORS[entry.name]}
               />
             ))}
           </Pie>
+
+          <Tooltip />
+          <Legend />
         </PieChart>
       </ResponsiveContainer>
     </div>

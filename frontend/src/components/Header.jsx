@@ -1,7 +1,15 @@
 import "../styles/header.css";
-import { Bell, RefreshCw, Calendar } from "lucide-react";
+import {
+  Bell,
+  RefreshCw,
+  Calendar,
+} from "lucide-react";
 
-function Header() {
+function Header({
+  onRefresh,
+  alertCount = 0,
+  username = "AJ",
+}) {
   return (
     <div className="header">
       <div className="header-left">
@@ -16,20 +24,24 @@ function Header() {
         </div>
 
         <button
-  className="refresh-btn"
-  onClick={() => window.location.reload()}
->
-  <RefreshCw size={18} />
-  Refresh
-</button>
+          className="refresh-btn"
+          onClick={onRefresh}
+          aria-label="Refresh dashboard"
+        >
+          <RefreshCw size={18} />
+          Refresh
+        </button>
 
         <div className="notification-icon">
           <Bell size={20} />
-          <span className="notification-badge">3</span>
+
+          <span className="notification-badge">
+            {alertCount}
+          </span>
         </div>
 
         <div className="profile">
-          AJ
+          {username}
         </div>
       </div>
     </div>

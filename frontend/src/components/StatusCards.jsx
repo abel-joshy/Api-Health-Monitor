@@ -5,7 +5,7 @@ import "../styles/statusCards.css";
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:8000";
 
-function StatusCards({ apis }) {
+function StatusCards() {
   const [stats, setStats] = useState({
     total_apis: 0,
     healthy: 0,
@@ -17,13 +17,13 @@ function StatusCards({ apis }) {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const res = await axios.get(
+        const { data } = await axios.get(
           `${API_BASE_URL}/api/monitor/stats`
         );
 
-        setStats(res.data);
-      } catch (err) {
-        console.error("Failed to fetch stats:", err);
+        setStats(data);
+      } catch (error) {
+        console.error("Failed to fetch stats:", error);
       }
     };
 
