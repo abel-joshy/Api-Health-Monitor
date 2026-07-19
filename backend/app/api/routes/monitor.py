@@ -1,14 +1,14 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from app.schemas.service_schema import ServiceCreate
 from app.services.health_checker import check_api
 from app.core.database import services_collection
+from app.core.seed import seed_services
 
 router = APIRouter()
 
-
-# --------------------------------------------------
-# Health Endpoint
-# --------------------------------------------------
+# =====================================================
+# API Health
+# =====================================================
 @router.get("/health")
 def health():
     return {
@@ -18,23 +18,120 @@ def health():
     }
 
 
-# --------------------------------------------------
-# Add a new API to monitor
-# --------------------------------------------------
+@router.get("/health/auth")
+def auth_health():
+    return {
+        "service": "Authentication Service",
+        "status": "UP"
+    }
+
+
+@router.get("/health/users")
+def users_health():
+    return {
+        "service": "User Service",
+        "status": "UP"
+    }
+
+
+@router.get("/health/admin")
+def admin_health():
+    return {
+        "service": "Admin Service",
+        "status": "UP"
+    }
+
+
+@router.get("/health/contact")
+def contact_health():
+    return {
+        "service": "Contact Service",
+        "status": "UP"
+    }
+
+
+@router.get("/health/messages")
+def messages_health():
+    return {
+        "service": "Message Service",
+        "status": "UP"
+    }
+
+
+@router.get("/health/notifications")
+def notifications_health():
+    return {
+        "service": "Notification Service",
+        "status": "UP"
+    }
+
+
+@router.get("/health/prices")
+def prices_health():
+    return {
+        "service": "Price Service",
+        "status": "UP"
+    }
+
+
+@router.get("/health/pickups")
+def pickups_health():
+    return {
+        "service": "Pickup Service",
+        "status": "UP"
+    }
+
+
+@router.get("/health/admin-pickups")
+def admin_pickups_health():
+    return {
+        "service": "Admin Pickup Service",
+        "status": "UP"
+    }
+
+
+# =====================================================
+# Seed Services
+# =====================================================
+@router.post("/seed")
+def seed():
+
+    seed_services()
+
+    return {
+        "success": True,
+        "message": "Services loaded successfully."
+    }
+
+
+# =====================================================
+# Add API
+# =====================================================
 @router.post("/add")
 def add_service(service: ServiceCreate):
+
+    existing = services_collection.find_one(
+        {"url": service.url}
+    )
+
+    if existing:
+        raise HTTPException(
+            status_code=400,
+            detail="Service already exists."
+        )
 
     services_collection.insert_one(service.dict())
 
     return {
-        "message": "Service added successfully",
+        "success": True,
+        "message": "Service added successfully.",
         "service": service
     }
 
 
-# --------------------------------------------------
-# Get all monitored APIs with health status
-# --------------------------------------------------
+# =====================================================
+# Get All APIs
+# =====================================================
 @router.get("/all")
 def get_all_services():
 
@@ -46,37 +143,69 @@ def get_all_services():
 
     for service in services:
 
-        health = check_api(service["url"])
+        try:
 
-        results.append({
-            "name": service["name"],
-            "url": service["url"],
-            "status": health.get("status"),
-            "response_time": health.get("response_time_ms"),
-            "status_code": health.get("status_code")
-        })
+            health = check_api(service["url"])
+
+            results.append({
+
+                "name": service["name"],
+                "url": service["url"],
+                "method": service.get("method", "GET"),
+                "category": service.get("category", "General"),
+
+                "status": health.get("status"),
+                "status_code": health.get("status_code"),
+                "response_time": health.get("response_time_ms")
+
+            })
+
+        except Exception as e:
+
+            results.append({
+
+                "name": service["name"],
+                "url": service["url"],
+                "method": service.get("method", "GET"),
+                "category": service.get("category", "General"),
+
+                "status": "DOWN",
+                "status_code": 500,
+                "response_time": 0,
+                "error": str(e)
+
+            })
 
     return results
 
 
-# --------------------------------------------------
-# Check a single API without saving
-# --------------------------------------------------
+# =====================================================
+# Check Single API
+# =====================================================
 @router.post("/check")
 def check_service(service: ServiceCreate):
 
-    result = check_api(service.url)
+    try:
 
-    return {
-        "service_name": service.name,
-        "url": service.url,
-        "result": result
-    }
+        result = check_api(service.url)
+
+        return {
+            "service_name": service.name,
+            "url": service.url,
+            "result": result
+        }
+
+    except Exception as e:
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
 
 
-# --------------------------------------------------
+# =====================================================
 # Dashboard Statistics
-# --------------------------------------------------
+# =====================================================
 @router.get("/stats")
 def get_stats():
 
@@ -84,44 +213,57 @@ def get_stats():
 
     total = len(results)
 
-    healthy = len([
-        x for x in results
-        if x["status"] == "UP"
-    ])
+    healthy = len(
+        [x for x in results if x["status"] == "UP"]
+    )
 
-    warning = len([
-        x for x in results
-        if x["status"] == "WARNING"
-    ])
+    warning = len(
+        [x for x in results if x["status"] == "WARNING"]
+    )
 
-    down = len([
-        x for x in results
-        if x["status"] == "DOWN"
-    ])
+    down = len(
+        [x for x in results if x["status"] == "DOWN"]
+    )
 
     response_times = [
+
         x["response_time"]
+
         for x in results
-        if x["response_time"] is not None
+
+        if isinstance(x["response_time"], (int, float))
+
     ]
 
     average_response = (
-        round(sum(response_times) / len(response_times), 2)
+
+        round(
+            sum(response_times) / len(response_times),
+            2
+        )
+
         if response_times else 0
+
     )
 
     return {
+
         "total_apis": total,
+
         "healthy": healthy,
+
         "warning": warning,
+
         "down": down,
+
         "average_response_time": average_response
+
     }
 
 
-# --------------------------------------------------
+# =====================================================
 # Delete API
-# --------------------------------------------------
+# =====================================================
 @router.delete("/delete/{service_name}")
 def delete_service(service_name: str):
 
@@ -130,10 +272,15 @@ def delete_service(service_name: str):
     )
 
     if result.deleted_count == 0:
-        return {
-            "message": "Service not found"
-        }
+
+        raise HTTPException(
+            status_code=404,
+            detail="Service not found."
+        )
 
     return {
-        "message": "Service deleted successfully"
+
+        "success": True,
+        "message": "Service deleted successfully."
+
     }

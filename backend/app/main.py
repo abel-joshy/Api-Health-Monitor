@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
+from app.core.seed import seed_services
 from app.api.routes.monitor import router as monitor_router
 
 app = FastAPI(
@@ -21,7 +21,9 @@ app.include_router(
     prefix="/api/monitor",
     tags=["Monitor"]
 )
-
+@app.on_event("startup")
+async def startup_event():
+    seed_services()
 @app.get("/")
 def home():
     return {
